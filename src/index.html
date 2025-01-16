@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo or NotTodo</title>
+</head>
+
+<body>
+    <div class="header">
+        To Do or Not To Do
+    </div>
+    <div class="container">
+        <div class="left">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2 id="home-title">Home</h2>
+                    <button id = "generalBtn">General</button>
+                    <button id="todayBtn">Today</button>
+                    <button id="weekBtn">Week</button>
+                    <button id="notesBtn">Notes</button>
+                    <h2 id="project-title">Projects</h2>
+                    <div class="projects"></div>
+                    <div class="formSpace">
+                        <div class="typeBtn hidden">
+                            <input type="button" value="Task" id="">
+                            <input type="button" value="Project" id="">
+                            <input type="button" value="Note" id="">
+                        </div>
+                        <form action="submit" class="addNewTask addNewForm hidden">
+                            <input type="text" name="task" id="task" placeholder="Add a new task">
+                            <input type="date" name="date" id="date">
+                            <input type="text" name="note" id="note" placeholder="Note">
+                            <div class="priority-Btns">
+                                <input type="button" value="Low" id="">
+                                <input type="button" value="Medium" id="">
+                                <input type="button" value="High" id="">
+                            </div>
+                            <button type="submit">Add</button>
+                        </form>
+                        <form action="submit" class="addNewNote addNewForm hidden">
+                            <input type="text" name="note" id="note" placeholder="Add a new note">
+                            <input type="text" name="note" id="note" placeholder="Note">
+                            <button type="submit">Add</button>
+                        </form>
+                        <form action="submit" class="addNewProject addNewForm hidden">
+                            <input type="text" name="task" id="task" placeholder="Add a new task">
+                            <input type="date" name="date" id="date">
+                            <input type="text" name="note" id="note" placeholder="Note">
+                            <div class="priority-Btns">
+                                <input type="button" value="Low" id="">
+                                <input type="button" value="Medium" id="">
+                                <input type="button" value="High" id="">
+                            </div>
+                            <button type="submit">Add</button>
+                        </form>
+                    </div>
+                    <button id="addNew">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="titleBox">
+                <h1 id="taskTitle">Nothing to <do class=""></do></h1>
+            </div>
+            <div class="content">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
