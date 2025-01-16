@@ -33,7 +33,7 @@ export class Project{
     editTitle(title){
         this.title = title;
     }
-    render(){
+    renderTasks(){
         this.#content = document.querySelector('.content');
         this.#content.innerHTML = '';
         const taskTitle = document.getElementById('taskTitle');
@@ -79,5 +79,11 @@ export class Project{
 
 
         }
+    }
+    renderProjects(){
+        const projectList = document.querySelector('.projects');
+        const project = document.createElement('button');
+        project.textContent = this.title;
+        projectList.appendChild(project);
     }
 }

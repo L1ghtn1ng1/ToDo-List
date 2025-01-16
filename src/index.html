@@ -22,7 +22,7 @@
                     <button id="notesBtn">Notes</button>
                     <h2 id="project-title">Projects</h2>
                     <div class="projects"></div>
-                    <div class="formSpace">
+                    <div class="formSpace hidden">
 
                         <div class="typeBtn hidden">
                             <input type="button" value="Task" id="taskBtn" class="type-btn">
@@ -32,43 +32,44 @@
 
 
                         <form action="" class="addNewTask addNewForm hidden">
-                            <label for="title">Title</label>
+                            <label for="title">*Title:</label>
                             <input type="text" name="title" id="title" placeholder="Task Title: Throw out the trash" required>
-                            <label for="date">Date</label>
+                            <label for="date">*Date:</label>
                             <input type="date" name="date" id="date" required>
                             <label for="desc">Description (optional)</label>
                             <input type="text" name="desc" id="desc" placeholder="Done by 5pm">
+                            <label>*Priority:</label>
                             <div class="priority-Btns">
                                 <input type="button" value="LOW" id="lowPriority" class = "priority-btns">
                                 <input type="button" value="MEDIUM" id="medPriority" class = "priority-btns">
                                 <input type="button" value="HIGH" id="highPriority" class = "priority-btns">
                             </div>
-                            <button type="submit" id="submitBtn">Add</button>
+                            <div class="form-btns">
+                                <button type="submit" id="submitBtn">Add</button>
+                                <button id = "cancelBtn">Cancel</button>
+                            </div>
                         </form>
 
 
                         <form action="" class="addNewNote addNewForm hidden">
-                            <label for="title">Title</label>
+                            <label for="title">*Title:</label>
                             <input type="text" name="title" id="title" placeholder="Add a new note" required>
                             <label for="desc">Description (optional)</label>
                             <input type="text" name="desc" id="desc" placeholder="Note">
-                            <button type="submit" id="submitBtn">Add</button>
+                            <div class="form-btns">
+                                <button type="submit" id="submitBtn">Add</button>
+                                <button id = "cancelBtn">Cancel</button>
+                            </div>
                         </form>
 
 
                         <form action="" class="addNewProject addNewForm hidden">
-                            <label for="title">Title</label>
-                            <input type="text" name="title" id="title" placeholder="Add a new task" required>
-                            <label for="date">Date</label>
-                            <input type="date" name="date" id="date" required>
-                            <label for="desc">Description (optional)</label>
-                            <input type="text" name="desc" id="desc" placeholder="Note">
-                            <div class="priority-Btns">
-                                <input type="button" value="LOW" id="lowPriority" class = "priority-btns">
-                                <input type="button" value="MEDIUM" id="medPriority" class = "priority-btns">
-                                <input type="button" value="HIGH" id="highPriority" class = "priority-btns">
+                            <label for="title">*Title:</label>
+                            <input type="text" name="title" id="title">
+                            <div class="form-btns">
+                                <button type="submit" id="submitBtn">Add</button>
+                                <button id = "cancelBtn">Cancel</button>
                             </div>
-                            <button type="submit" id="submitBtn">Add</button>
                         </form>
 
 
