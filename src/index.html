@@ -23,38 +23,55 @@
                     <h2 id="project-title">Projects</h2>
                     <div class="projects"></div>
                     <div class="formSpace">
+
                         <div class="typeBtn hidden">
-                            <input type="button" value="Task" id="">
-                            <input type="button" value="Project" id="">
-                            <input type="button" value="Note" id="">
+                            <input type="button" value="Task" id="taskBtn" class="type-btn">
+                            <input type="button" value="Project" id="projectBtn" class="type-btn">
+                            <input type="button" value="Note" id="noteBtn" class="type-btn">
                         </div>
-                        <form action="submit" class="addNewTask addNewForm hidden">
-                            <input type="text" name="task" id="task" placeholder="Add a new task">
-                            <input type="date" name="date" id="date">
-                            <input type="text" name="note" id="note" placeholder="Note">
+
+
+                        <form action="" class="addNewTask addNewForm hidden">
+                            <label for="title">Title</label>
+                            <input type="text" name="title" id="title" placeholder="Task Title: Throw out the trash" required>
+                            <label for="date">Date</label>
+                            <input type="date" name="date" id="date" required>
+                            <label for="desc">Description (optional)</label>
+                            <input type="text" name="desc" id="desc" placeholder="Done by 5pm">
                             <div class="priority-Btns">
-                                <input type="button" value="Low" id="">
-                                <input type="button" value="Medium" id="">
-                                <input type="button" value="High" id="">
+                                <input type="button" value="LOW" id="lowPriority" class = "priority-btns">
+                                <input type="button" value="MEDIUM" id="medPriority" class = "priority-btns">
+                                <input type="button" value="HIGH" id="highPriority" class = "priority-btns">
                             </div>
-                            <button type="submit">Add</button>
+                            <button type="submit" id="submitBtn">Add</button>
                         </form>
-                        <form action="submit" class="addNewNote addNewForm hidden">
-                            <input type="text" name="note" id="note" placeholder="Add a new note">
-                            <input type="text" name="note" id="note" placeholder="Note">
-                            <button type="submit">Add</button>
+
+
+                        <form action="" class="addNewNote addNewForm hidden">
+                            <label for="title">Title</label>
+                            <input type="text" name="title" id="title" placeholder="Add a new note" required>
+                            <label for="desc">Description (optional)</label>
+                            <input type="text" name="desc" id="desc" placeholder="Note">
+                            <button type="submit" id="submitBtn">Add</button>
                         </form>
-                        <form action="submit" class="addNewProject addNewForm hidden">
-                            <input type="text" name="task" id="task" placeholder="Add a new task">
-                            <input type="date" name="date" id="date">
-                            <input type="text" name="note" id="note" placeholder="Note">
+
+
+                        <form action="" class="addNewProject addNewForm hidden">
+                            <label for="title">Title</label>
+                            <input type="text" name="title" id="title" placeholder="Add a new task" required>
+                            <label for="date">Date</label>
+                            <input type="date" name="date" id="date" required>
+                            <label for="desc">Description (optional)</label>
+                            <input type="text" name="desc" id="desc" placeholder="Note">
                             <div class="priority-Btns">
-                                <input type="button" value="Low" id="">
-                                <input type="button" value="Medium" id="">
-                                <input type="button" value="High" id="">
+                                <input type="button" value="LOW" id="lowPriority" class = "priority-btns">
+                                <input type="button" value="MEDIUM" id="medPriority" class = "priority-btns">
+                                <input type="button" value="HIGH" id="highPriority" class = "priority-btns">
                             </div>
-                            <button type="submit">Add</button>
+                            <button type="submit" id="submitBtn">Add</button>
                         </form>
+
+
                     </div>
                     <button id="addNew">+</button>
                 </div>
@@ -63,7 +80,7 @@
 
         <div class="right">
             <div class="titleBox">
-                <h1 id="taskTitle">Nothing to <do class=""></do></h1>
+                <h1 id="taskTitle">Nothing to do...</h1>
             </div>
             <div class="content">
             </div>
