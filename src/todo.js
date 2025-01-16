@@ -37,10 +37,23 @@ export class Project{
         this.#content = document.querySelector('.content');
         this.#content.innerHTML = '';
         const taskTitle = document.getElementById('taskTitle');
+        taskTitle.innerHTML = '';
         taskTitle.textContent = this.title;
         for (const items of this.items){
             const card = document.createElement('div');
             card.classList.add('card');
+
+            switch (items.priority){
+                case 'LOW':
+                    card.classList.add('low');
+                    break;
+                case 'MEDIUM':
+                    card.classList.add('medium');
+                    break;
+                case 'HIGH':
+                    card.classList.add('high');
+                    break;
+            }
 
             const cardLeft = document.createElement('div');
             cardLeft.classList.add('card-left');
@@ -83,6 +96,13 @@ export class Project{
     renderProjects(){
         const projectList = document.querySelector('.projects');
         const project = document.createElement('button');
+        project.classList.add('project');
+        project.addEventListener('click', () => {
+            this.renderTasks();
+            const buttons = document.querySelectorAll('button');
+        buttons.forEach(button => button.classList.remove('chosen'));
+        project.classList.add('chosen');
+        });
         project.textContent = this.title;
         projectList.appendChild(project);
     }

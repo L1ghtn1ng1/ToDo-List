@@ -20,20 +20,44 @@ const projectBtn = document.getElementById('projectBtn');
 const addNewProject = document.querySelector('.addNewProject');
 const formSpace = document.querySelector('.formSpace');
 
+let lastPressedButton = null; // Variable to store the last pressed button
+
+// Add a click event listener to all buttons
+document.addEventListener('click', (e) => {
+    // Check if the clicked element is a button
+    if (e.target.tagName === 'BUTTON') {
+        lastPressedButton = e.target; // Update the reference to the last clicked button
+        console.log(`Last pressed button: ${lastPressedButton.innerText}`);
+    }
+});
+
+
 generalBtn.addEventListener('click', (e) => {
     general.renderTasks();
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.classList.remove('chosen'));
+    generalBtn.classList.add('chosen');
 });
 
 todayBtn.addEventListener('click', (e) => {
     today.renderTasks();
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.classList.remove('chosen'));
+    todayBtn.classList.add('chosen');
 });
 
 weekBtn.addEventListener('click', (e) => {
     week.renderTasks();
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.classList.remove('chosen'));
+    weekBtn.classList.add('chosen');
 });
 
 notesBtn.addEventListener('click', (e) => {
     notes.renderTasks();
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => button.classList.remove('chosen'));
+    notesBtn.classList.add('chosen');
 });
 
 
@@ -121,6 +145,7 @@ function attachButtonListeners(form) {
             }
             priority = priority.value;
         }
+
         if (form.classList.contains('addNewNote')) {
             console.log(title, description, priority);
         }
@@ -140,7 +165,6 @@ function attachButtonListeners(form) {
             general.renderTasks();
         } else if (form.classList.contains('addNewProject')) {
             let newProject = new Project(title);
-            newProject.addItem(newProject);
             newProject.renderProjects();
             console.log(newProject);
         } else {
