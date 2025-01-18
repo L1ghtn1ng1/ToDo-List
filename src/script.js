@@ -8,6 +8,7 @@ const notes = new Project('Notes');
 let allProjects = {};
 let allDates = {};
 let allTasks = {};
+let titleToTask = {};   
 allProjects['General'] = general;
 allProjects['Today'] = today;
 allProjects['This Week'] = week;
@@ -45,14 +46,14 @@ generalBtn.addEventListener('click', (e) => {
 });
 
 todayBtn.addEventListener('click', (e) => {
-    today.renderToday(allDates);
+    today.renderToday(allDates, titleToTask);
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => button.classList.remove('chosen'));
     todayBtn.classList.add('chosen');
 });
 
 weekBtn.addEventListener('click', (e) => {
-    week.renderWeek(allDates);
+    week.renderWeek(allDates, titleToTask);
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => button.classList.remove('chosen'));
     weekBtn.classList.add('chosen');
@@ -186,10 +187,11 @@ function attachButtonListeners(form) {
                 project.addItem(newTask);
                 project.renderTasks();
                 allTasks[newTask.title] = project;
+                titleToTask[newTask.title] = newTask;
                 console.log("Adding task to allTasks for project:");
                 setTimeout(() => {
                     console.log(allTasks);  // Logs after the task is added to the map
-                }, 0);
+                }, 100);
             } else {
                 general.addItem(newTask);
                 general.renderTasks();
@@ -206,7 +208,8 @@ function attachButtonListeners(form) {
                     newTask.completed = false;
                 }
             });
-            allDates[dueDate] = newTask;
+            allDates[newTask.title] = dueDate;
+            // CHANGE THE KEY FROM OBJECT TO SOMETHING ELSE NON OBJECT
 
         } else if (form.classList.contains('addNewProject')) {
             let newProject = new Project(title);

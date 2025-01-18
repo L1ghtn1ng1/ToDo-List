@@ -118,22 +118,25 @@ export class Project {
 
     }
 
-    renderToday(dates) {
+    renderToday(dates, titleToTask) {
         const today = new Date();
         const year = today.getFullYear();
         const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
         Object.entries(dates).forEach(([key, value]) => {
-            if (key === `${year}-${month}-${day}`) {
-                if (!this.items.some(item => item.title === value.title && item.dueDate === value.dueDate)) {
-                    this.addItem(value);
+            let task = titleToTask[key];
+            console.log("logging today task");
+            console.log(task);
+            if (value === `${year}-${month}-${day}`) {
+                if (!this.items.some(item => item.title === task.title && item.dueDate === task.dueDate)) {
+                    this.addItem(task);
                 }
             }
         });
         this.renderTasks();
     }
 
-    renderWeek(dates) {
+    renderWeek(dates, titleToTask) {
         const today = new Date();
         const week = [];
 
@@ -149,9 +152,12 @@ export class Project {
         }
                 
         Object.entries(dates).forEach(([key, value]) => {
-            if (week.includes(key)) {
-                if (!this.items.some(item => item.title === value.title && item.dueDate === value.dueDate)) {
-                    this.addItem(value);
+            if (week.includes(value)) {
+                let task = titleToTask[key];
+                console.log("logging week task");
+                console.log(task);
+                if (!this.items.some(item => item.title === task.title && item.dueDate === task.dueDate)) {
+                    this.addItem(task);
                 }
             }
         });
