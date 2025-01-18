@@ -1,49 +1,42 @@
-export class ToDoItem{
-    constructor(title, description = null, dueDate, priority){
+export class ToDoItem {
+    constructor(title, description = null, dueDate, priority) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
     }
-    toggleComplete(){
-        this.complete = !this.complete;
-    }
-    setPriority(priority){
+    setPriority(priority) {
         this.priority = priority;
     }
-    editDescription(description){
+    editDescription(description) {
         this.description = description;
     }
 }
 
-export class Project{
+export class Project {
     #content;
-    constructor(title){
+    constructor(title) {
         this.title = title;
         this.items = [];
     }
-    addItem(item){
+    addItem(item) {
         this.items.push(item);
+
     }
-    removeItem(item){
+    removeItem(item) {
         this.items.splice(this.items.indexOf(item), 1);
+        this.renderTasks();
     }
-    markComplete(){
-    }
-    editTitle(title){
-        this.title = title;
-    }
-    renderTasks(){
+    renderTasks() {
         this.#content = document.querySelector('.content');
         this.#content.innerHTML = '';
         const taskTitle = document.getElementById('taskTitle');
         taskTitle.innerHTML = '';
         taskTitle.textContent = this.title;
-        for (const items of this.items){
+        for (const items of this.items) {
             const card = document.createElement('div');
             card.classList.add('card');
-
-            switch (items.priority){
+            switch (items.priority) {
                 case 'LOW':
                     card.classList.add('low');
                     break;
@@ -66,6 +59,11 @@ export class Project{
             checkBox.type = 'checkbox';
             checkBox.id = 'done';
             checkBox.name = 'done';
+            if (items.completed) {
+                checkBox.checked = true;
+            } else {
+                checkBox.checked = false;
+            }
             leftDiv.appendChild(checkBox);
 
             const heading = document.createElement('label');
@@ -85,25 +83,85 @@ export class Project{
             const date = document.createElement('p');
             date.textContent = items.dueDate;
             dateDiv.appendChild(date);
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete');
+            //add image to button
+            deleteBtn.addEventListener('click', () => {
+                this.removeItem(items);
+            });
             cardRight.appendChild(dateDiv);
+            cardRight.appendChild(deleteBtn);
             this.#content.appendChild(card);
-            
-
-
-
         }
     }
-    renderProjects(){
+    renderProjects() {
         const projectList = document.querySelector('.projects');
         const project = document.createElement('button');
+        const deleteProj = document.createElement('button');
+        const projDiv = document.createElement('div');
+        projDiv.classList.add('projDiv');
+        projDiv.appendChild(project);
+        projDiv.appendChild(deleteProj);
+        deleteProj.classList.add('deleteProj');
+        deleteProj.setAttribute('data-project-name', this.title);
+        this.#content = document.querySelector('.content');
         project.classList.add('project');
         project.addEventListener('click', () => {
             this.renderTasks();
             const buttons = document.querySelectorAll('button');
-        buttons.forEach(button => button.classList.remove('chosen'));
-        project.classList.add('chosen');
+            buttons.forEach(button => button.classList.remove('chosen'));
+            project.classList.add('chosen');
         });
         project.textContent = this.title;
-        projectList.appendChild(project);
+        projectList.appendChild(projDiv);
+
+    }
+
+    renderToday(dates) {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        Object.entries(dates).forEach(([key, value]) => {
+            if (key === `${year}-${month}-${day}`) {
+                if (!this.items.some(item => item.title === value.title && item.dueDate === value.dueDate)) {
+                    this.addItem(value);
+                }
+            }
+        });
+        this.renderTasks();
+    }
+
+    renderWeek(dates) {
+        const today = new Date();
+        const week = [];
+
+        const dayOfWeek = today.getDay();
+
+        const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+
+        for (let i = 0; i < 7; i++) {
+
+            const day = new Date(today);
+            day.setDate(today.getDate() + diffToMonday + i);  
+            week.push(day.toISOString().slice(0, 10)); 
+        }
+                
+        Object.entries(dates).forEach(([key, value]) => {
+            if (week.includes(key)) {
+                if (!this.items.some(item => item.title === value.title && item.dueDate === value.dueDate)) {
+                    this.addItem(value);
+                }
+            }
+        });
+        this.renderTasks();
+    }
+
+    clearTasks() {
+        console.log(`Clearing tasks for project: ${this.title}`);
+        this.items = [];
+        this.title = 'Nothing to do!';
+        this.renderTasks();
     }
 }

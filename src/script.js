@@ -5,7 +5,13 @@ const general = new Project('General');
 const today = new Project('Today');
 const week = new Project('This Week');
 const notes = new Project('Notes');
-
+let allProjects = {};
+let allDates = {};
+let allTasks = {};
+allProjects['General'] = general;
+allProjects['Today'] = today;
+allProjects['This Week'] = week;
+allProjects['Notes'] = notes;
 const generalBtn = document.getElementById('generalBtn');
 const todayBtn = document.getElementById('todayBtn');
 const weekBtn = document.getElementById('weekBtn');
@@ -25,9 +31,8 @@ let lastPressedButton = null; // Variable to store the last pressed button
 // Add a click event listener to all buttons
 document.addEventListener('click', (e) => {
     // Check if the clicked element is a button
-    if (e.target.tagName === 'BUTTON') {
-        lastPressedButton = e.target; // Update the reference to the last clicked button
-        console.log(`Last pressed button: ${lastPressedButton.innerText}`);
+    if (e.target.tagName === 'BUTTON' && e.target.classList.contains('chosen')) {
+        lastPressedButton = e.target;
     }
 });
 
@@ -40,14 +45,14 @@ generalBtn.addEventListener('click', (e) => {
 });
 
 todayBtn.addEventListener('click', (e) => {
-    today.renderTasks();
+    today.renderToday(allDates);
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => button.classList.remove('chosen'));
     todayBtn.classList.add('chosen');
 });
 
 weekBtn.addEventListener('click', (e) => {
-    week.renderTasks();
+    week.renderWeek(allDates);
     const buttons = document.querySelectorAll('button');
     buttons.forEach(button => button.classList.remove('chosen'));
     weekBtn.classList.add('chosen');
@@ -60,10 +65,35 @@ notesBtn.addEventListener('click', (e) => {
     notesBtn.classList.add('chosen');
 });
 
-
-
+document.addEventListener('click', (e) => {
+    if (e.target && e.target.classList.contains('deleteProj')) {
+        const projectName = e.target.getAttribute('data-project-name');
+        if (projectName && allProjects[projectName]) {
+            console.log("before Tasks");
+            console.log(allTasks);
+            console.log(allTasks['trial']);
+            console.log("before dates: ");
+            console.log(allDates);
+            Object.entries(allTasks).forEach(([key, value]) => {
+                if (value === allProjects[projectName]) {
+                    delete allTasks[key];   
+                    delete allDates[key];
+                    week.removeItem(key);  
+                    today.removeItem(key);
+                    console.log("after dates:");
+                    console.log(allDates);
+                    console.log("after tasks: ");
+                    console.log(allTasks);
+                }
+            });
+            allProjects[projectName].clearTasks();
+            delete allProjects[projectName];
+            const temp = e.target.closest('.projDiv');
+            temp.remove(); // Remove the project from the UI
+        }
+    }
+});
 function attachButtonListeners(form) {
-    console.log(form);
     const lowPriority = form.querySelector('#lowPriority');
     const mediumPriority = form.querySelector('#medPriority');
     const highPriority = form.querySelector('#highPriority');
@@ -105,10 +135,10 @@ function attachButtonListeners(form) {
         });
     }
     const cancelBtn = form.querySelector('#cancelBtn');
-    console.log(cancelBtn);
 
     cancelBtn.addEventListener('click', (e) => {
         e.preventDefault();
+        form.reset();
         formSpace.style.display = 'none';
     });
 
@@ -124,6 +154,9 @@ function attachButtonListeners(form) {
         let title = form.querySelector('#title').value;
         if (!title) {
             alert("No title entered!");
+            return;
+        } else if (title in allProjects) {
+            alert("Title already exists!");
             return;
         }
         let description = form.querySelector('#desc');
@@ -145,31 +178,42 @@ function attachButtonListeners(form) {
             }
             priority = priority.value;
         }
-
-        if (form.classList.contains('addNewNote')) {
-            console.log(title, description, priority);
-        }
-        else if (form.classList.contains('addNewNote')) {
-            console.log(title, description, dueDate, priority);
-        }
-        else {
-            console.log(title, description);
-        }
-
-
         // check if its a task, project or note
         if (form.classList.contains('addNewTask')) {
             let newTask = new ToDoItem(title, description, dueDate, priority);
-            general.addItem(newTask);
-            console.log(newTask);
-            general.renderTasks();
+            if (lastPressedButton && lastPressedButton.classList.contains('project', 'chosen')) {
+                let project = allProjects[lastPressedButton.innerText];
+                project.addItem(newTask);
+                project.renderTasks();
+                allTasks[newTask.title] = project;
+                console.log("Adding task to allTasks for project:");
+                setTimeout(() => {
+                    console.log(allTasks);  // Logs after the task is added to the map
+                }, 0);
+            } else {
+                general.addItem(newTask);
+                general.renderTasks();
+                // allTasks.set(newTask,general);
+                // console.log("Adding task to allTasks for general:");
+                // console.log(allTasks);
+                
+            }
+            const check = document.querySelector('#done');
+            check.addEventListener('click', (e) => {
+                if (check.checked) {
+                    newTask.completed = true;
+                } else {
+                    newTask.completed = false;
+                }
+            });
+            allDates[dueDate] = newTask;
+
         } else if (form.classList.contains('addNewProject')) {
             let newProject = new Project(title);
             newProject.renderProjects();
-            console.log(newProject);
+            allProjects[title] = newProject;
         } else {
             let newNote = new ToDoItem(title, description, null, null);
-            console.log(newNote);
             notes.addItem(newNote);
             notes.renderTasks();
         }
@@ -235,3 +279,4 @@ projectBtn.addEventListener('click', (e) => {
     }
     attachButtonListeners(addNewProject);
 });
+

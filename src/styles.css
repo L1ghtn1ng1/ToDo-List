@@ -34,10 +34,14 @@ body{
     margin-left: auto;
     margin-right: auto;
     border-radius: 10px;
+    transition: 0.3s;
 }
 .sidebar button:hover{
-    background-color: rgb(163, 42, 113);
-    color: white;
+    background-color: #ccc1b3;
+    color: black;
+}
+.sidebar button:active{
+    transform: scale(0.95);
 }
 .sidebar-header{
     padding-left: 15px;
@@ -101,7 +105,7 @@ body{
 .content{
     padding: 20px;
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 10px;
 }
 .card{
@@ -111,6 +115,11 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: white;
+    transition: background-color 0.2s, transform 0.1s;
+}
+.card:active{
+    transform: scale(0.99);
 }
 
 .date{
@@ -132,6 +141,7 @@ body{
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 10px;
 }
 .card-left p{
     margin-left: 24px;
@@ -178,6 +188,10 @@ body{
 
 .type-btn:hover {
     background-color: #dcdcdc;
+}
+
+.type-btn:active {
+    transform: scale(0.9);
 }
 
 .type-btn.selected {
@@ -232,6 +246,10 @@ button[type="submit"] {
     transition: background-color 0.3s ease, transform 0.2s;
 }
 
+.priority-btns:active {
+    transform: scale(0.9);
+}
+
 .formSpace{
     display: flex;
     flex-direction: column;
@@ -271,4 +289,41 @@ button[type="submit"] {
 .chosen{
     background-color: rgb(163, 42, 113) !important;
     color: white !important;
+}
+
+.newTask{
+    border-radius: 10px;
+    padding: 7px;
+    border: 1px solid #a32a71;
+}
+
+.newTask:hover{
+    background-color: #a32a71;
+    color: white;
+}
+
+.delete{
+    background-image: url(asset/resource/delete.svg);
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.projDiv{
+    display: grid;
+    grid-template-columns: 11fr 1fr;
+}
+
+.deleteProj{
+    background-image: url(asset/resource/delete.svg);
+    background-size: cover;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+    scale: 0.75;
+}
+
+.deleteProj:hover{
+    transform: scale(1.1);
 }
