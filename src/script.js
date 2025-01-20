@@ -1,18 +1,35 @@
 import './styles.css';
 import { ToDoItem } from './todo';
 import { Project } from './todo';
-const general = new Project('General');
-const today = new Project('Today');
-const week = new Project('This Week');
-const notes = new Project('Notes');
+// let general = new Project('General');
+// let today = new Project('Today');
+// let week = new Project('This Week');
+// let notes = new Project('Notes');
 let allProjects = {};
 let allDates = {};
 let allTasks = {};
-let titleToTask = {};   
-allProjects['General'] = general;
-allProjects['Today'] = today;
-allProjects['This Week'] = week;
-allProjects['Notes'] = notes;
+let titleToTask = {};
+let general;
+let today;
+let week;
+let notes;
+
+
+if (Object.keys(allProjects).length === 0 && Object.keys(allDates).length === 0 && Object.keys(allTasks).length === 0) {
+    general = new Project('General');
+    today = new Project('Today');
+    week = new Project('This Week');
+    notes = new Project('Notes');
+
+    allProjects['General'] = general;
+    allProjects['Today'] = today;
+    allProjects['This Week'] = week;
+    allProjects['Notes'] = notes;
+    saveToLocalStorage();
+} else {
+    loadFromLocalStorage();
+    // localStorage.clear();
+}
 const generalBtn = document.getElementById('generalBtn');
 const todayBtn = document.getElementById('todayBtn');
 const weekBtn = document.getElementById('weekBtn');
@@ -70,30 +87,45 @@ document.addEventListener('click', (e) => {
     if (e.target && e.target.classList.contains('deleteProj')) {
         const projectName = e.target.getAttribute('data-project-name');
         if (projectName && allProjects[projectName]) {
-            console.log("before Tasks");
-            console.log(allTasks);
-            console.log(allTasks['trial']);
-            console.log("before dates: ");
-            console.log(allDates);
             Object.entries(allTasks).forEach(([key, value]) => {
                 if (value === allProjects[projectName]) {
-                    delete allTasks[key];   
+                    delete allTasks[key];
                     delete allDates[key];
-                    week.removeItem(key);  
+                    week.removeItem(key);
                     today.removeItem(key);
-                    console.log("after dates:");
-                    console.log(allDates);
-                    console.log("after tasks: ");
-                    console.log(allTasks);
                 }
             });
             allProjects[projectName].clearTasks();
             delete allProjects[projectName];
             const temp = e.target.closest('.projDiv');
             temp.remove(); // Remove the project from the UI
+            saveToLocalStorage();
         }
     }
 });
+
+document.addEventListener('click', (e) => {
+    if (e.target && e.target.classList.contains('delete')) {
+        console.log("Deleting task");
+        const taskName = e.target.getAttribute('data-title');
+        const projName = allTasks[taskName]
+        Object.entries(allTasks).forEach(([key, value]) => {
+            if (key === taskName) {
+                delete allTasks[key];
+                delete allDates[key];
+                week.removeItem(key);
+                today.removeItem(key);
+                projName.removeItem(key);
+                projName.renderTasks();
+            }
+        });
+        saveToLocalStorage();
+
+    }
+});
+
+
+
 function attachButtonListeners(form) {
     const lowPriority = form.querySelector('#lowPriority');
     const mediumPriority = form.querySelector('#medPriority');
@@ -188,17 +220,14 @@ function attachButtonListeners(form) {
                 project.renderTasks();
                 allTasks[newTask.title] = project;
                 titleToTask[newTask.title] = newTask;
-                console.log("Adding task to allTasks for project:");
-                setTimeout(() => {
-                    console.log(allTasks);  // Logs after the task is added to the map
-                }, 100);
+                saveToLocalStorage();
             } else {
                 general.addItem(newTask);
                 general.renderTasks();
-                // allTasks.set(newTask,general);
-                // console.log("Adding task to allTasks for general:");
-                // console.log(allTasks);
-                
+                allTasks[newTask.title] = general;
+                titleToTask[newTask.title] = newTask;
+                saveToLocalStorage();
+
             }
             const check = document.querySelector('#done');
             check.addEventListener('click', (e) => {
@@ -209,16 +238,19 @@ function attachButtonListeners(form) {
                 }
             });
             allDates[newTask.title] = dueDate;
-            // CHANGE THE KEY FROM OBJECT TO SOMETHING ELSE NON OBJECT
+            saveToLocalStorage();
 
         } else if (form.classList.contains('addNewProject')) {
             let newProject = new Project(title);
             newProject.renderProjects();
             allProjects[title] = newProject;
+            saveToLocalStorage();
+
         } else {
             let newNote = new ToDoItem(title, description, null, null);
             notes.addItem(newNote);
             notes.renderTasks();
+            saveToLocalStorage();
         }
         formSpace.style.display = 'none';
         form.reset();
@@ -282,4 +314,61 @@ projectBtn.addEventListener('click', (e) => {
     }
     attachButtonListeners(addNewProject);
 });
+
+
+
+function saveToLocalStorage() {
+    localStorage.setItem('allProjects', JSON.stringify(allProjects));
+    localStorage.setItem('allTasks', JSON.stringify(allTasks));
+    localStorage.setItem('allDates', JSON.stringify(allDates));
+    localStorage.setItem('titleToTask', JSON.stringify(titleToTask));
+    console.log("Logging dates")
+    console.log(allDates);
+}
+
+function loadFromLocalStorage() {
+    console.log("Loading Projects");
+    const projects = localStorage.getItem('allProjects');
+    console.log(projects);
+
+    const tasks = localStorage.getItem('allTasks');
+    console.log("Logging tasks")
+    console.log(tasks);
+    console.log("Logging dates")
+    const dates = localStorage.getItem('allDates');
+    console.log(dates);
+
+
+    if (projects) {
+        const parsedProjects = JSON.parse(projects);
+        for (const [key, project] of Object.entries(parsedProjects)) {
+            allProjects[key] = Object.assign(new Project(), project);
+            //go through each projects tasks and add them to the project
+            for (const [key, task] of Object.entries(allTasks)) {
+                if (task === allProjects[key]) {
+                    allProjects[key].addItem(titleToTask[key]);
+                }
+            }
+        }
+        general = allProjects['General'];
+        today = allProjects['Today'];
+        week = allProjects['This Week'];
+        notes = allProjects['Notes'];
+        general.renderTasks();
+    }
+
+    if (tasks) {
+        const parsedTasks = JSON.parse(tasks);
+        for (const [key, task] of Object.entries(parsedTasks)) {
+            titleToTask[key] = Object.assign(new ToDoItem(), task);
+            allTasks[key] = allProjects[task.project];
+        }
+    }
+
+    if (dates) {
+        allDates = JSON.parse(dates);
+    }
+}
+console.log(localStorage)
+console.log(loadFromLocalStorage());
 

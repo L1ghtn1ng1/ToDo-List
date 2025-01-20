@@ -25,7 +25,7 @@ export class Project {
     }
     removeItem(item) {
         this.items.splice(this.items.indexOf(item), 1);
-        this.renderTasks();
+        // this.renderTasks();
     }
     renderTasks() {
         this.#content = document.querySelector('.content');
@@ -83,16 +83,20 @@ export class Project {
             const date = document.createElement('p');
             date.textContent = items.dueDate;
             dateDiv.appendChild(date);
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.classList.add('delete');
-            //add image to button
-            deleteBtn.addEventListener('click', () => {
-                this.removeItem(items);
-            });
             cardRight.appendChild(dateDiv);
-            cardRight.appendChild(deleteBtn);
+
+            if (this.title !== 'Today' && this.title !== 'This Week') {
+                const deleteBtn = document.createElement('button');
+                deleteBtn.setAttribute('data-title', items.title);
+                deleteBtn.classList.add('delete');
+                // deleteBtn.addEventListener('click', () => {
+                //     this.removeItem(items);
+                // });
+                cardRight.appendChild(deleteBtn);
+            }
+        
             this.#content.appendChild(card);
+
         }
     }
     renderProjects() {
@@ -125,8 +129,6 @@ export class Project {
         const day = String(today.getDate()).padStart(2, '0');
         Object.entries(dates).forEach(([key, value]) => {
             let task = titleToTask[key];
-            console.log("logging today task");
-            console.log(task);
             if (value === `${year}-${month}-${day}`) {
                 if (!this.items.some(item => item.title === task.title && item.dueDate === task.dueDate)) {
                     this.addItem(task);
@@ -147,15 +149,13 @@ export class Project {
         for (let i = 0; i < 7; i++) {
 
             const day = new Date(today);
-            day.setDate(today.getDate() + diffToMonday + i);  
-            week.push(day.toISOString().slice(0, 10)); 
+            day.setDate(today.getDate() + diffToMonday + i);
+            week.push(day.toISOString().slice(0, 10));
         }
-                
+
         Object.entries(dates).forEach(([key, value]) => {
             if (week.includes(value)) {
                 let task = titleToTask[key];
-                console.log("logging week task");
-                console.log(task);
                 if (!this.items.some(item => item.title === task.title && item.dueDate === task.dueDate)) {
                     this.addItem(task);
                 }
@@ -165,7 +165,6 @@ export class Project {
     }
 
     clearTasks() {
-        console.log(`Clearing tasks for project: ${this.title}`);
         this.items = [];
         this.title = 'Nothing to do!';
         this.renderTasks();
