@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo or NotTodo</title>
+<script defer src="main.js"></script></head>
+
+<body>
+    <div class="header">
+        To Do or Not To Do
+    </div>
+    <div class="container">
+        <div class="left">
+            <div class="sidebar">
+                <div class="sidebar-header">
+                    <h2 id="home-title">Home</h2>
+                    <button id = "generalBtn">General</button>
+                    <button id="todayBtn">Today</button>
+                    <button id="weekBtn">Week</button>
+                    <button id="notesBtn">Notes</button>
+                    <h2 id="project-title">Projects</h2>
+                    <div class="projects"></div>
+                    <div class="formSpace hidden">
+
+                        <div class="typeBtn hidden">
+                            <input type="button" value="Task" id="taskBtn" class="type-btn">
+                            <input type="button" value="Project" id="projectBtn" class="type-btn">
+                            <input type="button" value="Note" id="noteBtn" class="type-btn">
+                        </div>
+
+
+                        <form action="" class="addNewTask addNewForm hidden">
+                            <label for="title">*Title:</label>
+                            <input type="text" name="title" id="title" placeholder="Task Title: Throw out the trash" required>
+                            <label for="date">*Date:</label>
+                            <input type="date" name="date" id="date" required>
+                            <label for="desc">Description (optional)</label>
+                            <input type="text" name="desc" id="desc" placeholder="Done by 5pm">
+                            <label>*Priority:</label>
+                            <div class="priority-Btns">
+                                <input type="button" value="LOW" id="lowPriority" class = "priority-btns">
+                                <input type="button" value="MEDIUM" id="medPriority" class = "priority-btns">
+                                <input type="button" value="HIGH" id="highPriority" class = "priority-btns">
+                            </div>
+                            <div class="form-btns">
+                                <button type="submit" id="submitBtn">Add</button>
+                                <button id = "cancelBtn">Cancel</button>
+                            </div>
+                        </form>
+
+
+                        <form action="" class="addNewNote addNewForm hidden">
+                            <label for="title">*Title:</label>
+                            <input type="text" name="title" id="title" placeholder="Add a new note" required>
+                            <label for="desc">Description (optional)</label>
+                            <input type="text" name="desc" id="desc" placeholder="Note">
+                            <div class="form-btns">
+                                <button type="submit" id="submitBtn">Add</button>
+                                <button id = "cancelBtn">Cancel</button>
+                            </div>
+                        </form>
+
+
+                        <form action="" class="addNewProject addNewForm hidden">
+                            <label for="title">*Title:</label>
+                            <input type="text" name="title" id="title">
+                            <div class="form-btns">
+                                <button type="submit" id="submitBtn">Add</button>
+                                <button id = "cancelBtn">Cancel</button>
+                            </div>
+                        </form>
+
+
+                    </div>
+                    <button id="addNew">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="titleBox">
+                <h1 id="taskTitle">Nothing to do!</h1>
+            </div>
+            <div class="content">
+                <button class = "newTask hidden">Add Task</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
